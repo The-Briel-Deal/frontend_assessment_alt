@@ -3,10 +3,12 @@
 import { jsx, css } from "@emotion/react";
 import styled from "@emotion/styled";
 import Grid from "@mui/material/Grid";
+import { useSearch } from "./hooks/useSearch";
 function App() {
   const Title = styled.h1`
     font-family: "Roboto", sans-serif;
   `;
+  useSearch("lebron");
   return (
     <Grid container direction="column" alignItems="center">
       <Grid item xs={12}>
