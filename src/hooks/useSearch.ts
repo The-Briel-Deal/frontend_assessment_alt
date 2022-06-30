@@ -1,3 +1,4 @@
+// This is a custom search hook with a function to search and state to store the results
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import axios from "axios";
 import { SearchEndpointResponse } from "../types/SearchEndpointResponse";
@@ -24,5 +25,5 @@ export function useSearch() {
         });
     });
   };
-  return [searchState, refetchSearch];
+  return { searchState, refetchSearch };
 }
