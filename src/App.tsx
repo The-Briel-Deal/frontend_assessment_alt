@@ -8,11 +8,12 @@ function App() {
   const Title = styled.h1`
     font-family: "Roboto", sans-serif;
   `;
-  useSearch("lebron");
+  const [searchState, refetchSearch] = useSearch();
   return (
     <Grid container direction="column" alignItems="center">
       <Grid item xs={12}>
         <Title>Card Search</Title>
+        <code>{JSON.stringify(searchState)}</code>
       </Grid>
     </Grid>
   );
