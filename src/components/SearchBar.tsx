@@ -2,15 +2,16 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import { Grid, TextField, Button } from "@mui/material";
+import { useState, useEffect } from "react";
 
 export default function SearchBar(props: {
   refetchSearch: (search: string) => void;
 }) {
+  const [searchBarValue, setSearchBarValue] = useState("");
   return (
     <Grid
       container
       justifyContent="center"
-      xs={12}
       columnSpacing={{ xs: 1, sm: 2, md: 3 }}
     >
       <Grid item xs={4}>
@@ -22,6 +23,10 @@ export default function SearchBar(props: {
           id="outlined-basic"
           label="Outlined"
           variant="outlined"
+          value={searchBarValue}
+          onChange={(e) => {
+            setSearchBarValue(e.target.value);
+          }}
         />
       </Grid>
       <Grid item xs={2}>
@@ -31,6 +36,11 @@ export default function SearchBar(props: {
             width: 100%;
           `}
           variant="contained"
+          onClick={() => {
+            // useEffect(() => {
+            //   props.refetchSearch(searchBarValue);
+            // });
+          }}
         >
           Search
         </Button>
