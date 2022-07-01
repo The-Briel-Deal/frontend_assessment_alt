@@ -8,6 +8,10 @@ export default function SearchBar(props: {
   refetchSearch: (search: string) => void;
 }) {
   const [searchBarValue, setSearchBarValue] = useState("");
+  function handleClick() {
+    // useEffect(() => {
+    props.refetchSearch(searchBarValue);
+  }
   return (
     <Grid
       container
@@ -36,11 +40,7 @@ export default function SearchBar(props: {
             width: 100%;
           `}
           variant="contained"
-          onClick={() => {
-            // useEffect(() => {
-            //   props.refetchSearch(searchBarValue);
-            // });
-          }}
+          onClick={handleClick}
         >
           Search
         </Button>
