@@ -4,10 +4,12 @@ import styled from "@emotion/styled";
 import Grid from "@mui/material/Grid";
 import { useSearch } from "./hooks/useSearch";
 import SearchBar from "./components/SearchBar";
+import CardGrid from "./components/CardGrid";
 function App() {
   const Title = styled.h1`
     font-family: "Roboto", sans-serif;
   `;
+  // This custom hook holds the current result of the search, call refetch with a search string to update the result.
   const { searchState, refetchSearch } = useSearch();
   return (
     <Grid container direction="column" alignItems="center">
@@ -15,9 +17,7 @@ function App() {
         <Title>Card Search</Title>
       </Grid>
       <SearchBar refetchSearch={refetchSearch} />
-      <Grid item xs={12}>
-        <code>{JSON.stringify(searchState)}</code>
-      </Grid>
+      <CardGrid cardData={searchState.hits} />
     </Grid>
   );
 }
