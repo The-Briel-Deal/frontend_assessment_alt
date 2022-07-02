@@ -9,6 +9,8 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { css } from "@emotion/react";
 import { useState, useEffect } from "react";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 export default function CardGrid(props: { cardData: Hit[] }) {
   const [isFavorite, setIsFavorite] = useState([
     ...JSON.parse(localStorage.getItem("isFavorite") || "[]"),
@@ -16,90 +18,118 @@ export default function CardGrid(props: { cardData: Hit[] }) {
   useEffect(() => {
     localStorage.setItem("isFavorite", JSON.stringify(isFavorite));
   }, [isFavorite]);
-
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   return (
-    <Grid container alignItems="center" spacing={2} columns={12}>
-      {props.cardData.map((data: Hit) => {
-        return (
-          <Grid
-            item
-            xs={4}
-            md={3}
-            sm={2}
-            css={css`
-              height: 26em;
-            `}
-            key={data.objectID}
-          >
-            <Card
+    <>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Card
+          css={css`
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400;
+          `}
+        >
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Text in a modal
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          </Typography>
+        </Card>
+      </Modal>
+      <Grid container alignItems="center" spacing={2} columns={12}>
+        {props.cardData.map((data: Hit) => {
+          return (
+            <Grid
+              item
+              xs={4}
+              md={3}
+              sm={2}
               css={css`
-                height: 100%;
+                height: 26em;
               `}
+              onClick={handleOpen}
+              key={data.objectID}
             >
-              <CardHeader
-                title={
-                  data.name.length < 30
-                    ? data.name
-                    : data.name.slice(0, 30) + "..."
-                }
-                subheader={`${data.gradingCompany} Grade ${data.grade} - ${data.year} ${data.subject}`}
+              <Card
                 css={css`
-                  height: 5em;
+                  height: 100%;
                 `}
-              />
-              <CardMedia
-                component="img"
-                css={css`
-                  height: 15em;
-                `}
-                image={data.images[0].url}
-                alt="Image of card"
-              />
-              <CardContent>
-                <Grid
-                  container
-                  direction="row"
-                  spacing={2}
-                  justifyContent="space-between"
-                >
-                  <Grid item>
-                    <Typography variant="body2" color="text.secondary">
-                      ${data.lowestListingPrice}.00 USD
-                    </Typography>
-                  </Grid>
+              >
+                <CardHeader
+                  title={
+                    data.name.length < 30
+                      ? data.name
+                      : data.name.slice(0, 30) + "..."
+                  }
+                  subheader={`${data.gradingCompany} Grade ${data.grade} - ${data.year} ${data.subject}`}
+                  css={css`
+                    height: 5em;
+                  `}
+                />
+                <CardMedia
+                  component="img"
+                  css={css`
+                    height: 15em;
+                  `}
+                  image={data.images[0].url}
+                  alt="Image of card"
+                />
+                <CardContent>
                   <Grid
-                    item
-                    onClick={() => {
-                      if (isFavorite.includes(data.objectID)) {
-                        setIsFavorite(
-                          isFavorite.filter((id) => id !== data.objectID)
-                        );
-                      } else {
-                        setIsFavorite([...isFavorite, data.objectID]);
-                      }
-                    }}
+                    container
+                    direction="row"
+                    spacing={2}
+                    justifyContent="space-between"
                   >
-                    {(() => {
-                      if (isFavorite.includes(data.objectID)) {
+                    <Grid item>
+                      <Typography variant="body2" color="text.secondary">
+                        ${data.lowestListingPrice}.00 USD
+                      </Typography>
+                    </Grid>
+                    <Grid
+                      item
+                      onClick={() => {
+                        if (isFavorite.includes(data.objectID)) {
+                          setIsFavorite(
+                            isFavorite.filter((id) => id !== data.objectID)
+                          );
+                        } else {
+                          setIsFavorite([...isFavorite, data.objectID]);
+                        }
+                      }}
+                    >
+                      {(() => {
+                        if (isFavorite.includes(data.objectID)) {
+                          return (
+                            <Typography variant="body2" color="text.secondary">
+                              ★
+                            </Typography>
+                          );
+                        }
                         return (
                           <Typography variant="body2" color="text.secondary">
-                            ★
+                            ☆
                           </Typography>
                         );
-                      }
-                      return (
-                        <Typography variant="body2" color="text.secondary">
-                          ☆
-                        </Typography>
-                      );
-                    })()}
+                      })()}
+                    </Grid>
                   </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
-        );
-      })}
-    </Grid>
+                </CardContent>
+              </Card>
+            </Grid>
+          );
+        })}
+      </Grid>
+    </>
   );
 }
