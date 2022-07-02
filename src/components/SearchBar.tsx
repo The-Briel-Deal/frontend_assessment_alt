@@ -57,7 +57,6 @@ export default function SearchBar(props: {
             margin-right: 10px;
           `}
         >
-          {page}
           <Button
             variant="contained"
             onClick={() => {

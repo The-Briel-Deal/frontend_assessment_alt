@@ -21,6 +21,7 @@ export default function CardGrid(props: { cardData: Hit[] }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [selectedCard, setSelectedCard] = useState(null as Hit | null);
   return (
     <>
       <Modal
@@ -36,14 +37,85 @@ export default function CardGrid(props: { cardData: Hit[] }) {
             left: 50%;
             transform: translate(-50%, -50%);
             width: 400;
+            height: 90%;
           `}
         >
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          {(() => {
+            if (selectedCard) {
+              return (
+                <>
+                  <CardHeader
+                    title={
+                      selectedCard.name.length < 30
+                        ? selectedCard.name
+                        : selectedCard.name.slice(0, 30) + "..."
+                    }
+                    subheader={`${selectedCard.gradingCompany} Grade ${selectedCard.grade} - ${selectedCard.year} ${selectedCard.subject}`}
+                    css={css`
+                      height: 5em;
+                    `}
+                  />
+                  <CardMedia
+                    component="img"
+                    css={css`
+                      height: 70%;
+                    `}
+                    image={selectedCard.images[0].url}
+                    alt="Image of card"
+                  />
+                  <CardContent>
+                    <Grid
+                      container
+                      direction="row"
+                      spacing={2}
+                      justifyContent="space-between"
+                    >
+                      <Grid item>
+                        <Typography variant="body2" color="text.secondary">
+                          ${selectedCard.lowestListingPrice}.00 USD
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        item
+                        onClick={() => {
+                          if (isFavorite.includes(selectedCard.objectID)) {
+                            setIsFavorite(
+                              isFavorite.filter(
+                                (id) => id !== selectedCard.objectID
+                              )
+                            );
+                          } else {
+                            setIsFavorite([
+                              ...isFavorite,
+                              selectedCard.objectID,
+                            ]);
+                          }
+                        }}
+                      >
+                        {(() => {
+                          if (isFavorite.includes(selectedCard.objectID)) {
+                            return (
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                              >
+                                ★
+                              </Typography>
+                            );
+                          }
+                          return (
+                            <Typography variant="body2" color="text.secondary">
+                              ☆
+                            </Typography>
+                          );
+                        })()}
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                </>
+              );
+            }
+          })()}
         </Card>
       </Modal>
       <Grid container alignItems="center" spacing={2} columns={12}>
@@ -58,7 +130,10 @@ export default function CardGrid(props: { cardData: Hit[] }) {
               css={css`
                 height: 26em;
               `}
-              onClick={handleOpen}
+              onClick={() => {
+                setSelectedCard(data);
+                handleOpen();
+              }}
               key={data.objectID}
             >
               <Card
