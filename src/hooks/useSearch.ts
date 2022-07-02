@@ -6,12 +6,13 @@ import { SearchEndpointResponse } from "../types/SearchEndpointResponse";
 export function useSearch() {
   const [searchState, setSearchState] = useState({
     hits: [],
+    nbPages: 0,
   } as SearchEndpointResponse);
   const refetchSearch = (search: string) => {
     axios
       .post(
         "https://B1DNT5RUEF-dsn.algolia.net/1/indexes/prod_listing_grouped/query",
-        { query: search },
+        { query: search, page: 0, hitsPerPage: 12 },
         {
           headers: {
             "x-algolia-api-key": "cf0df355324891a712c5c43d83383f17",

@@ -16,7 +16,7 @@ function App() {
       <Grid item xs={12}>
         <Title>Card Search</Title>
       </Grid>
-      <SearchBar refetchSearch={refetchSearch} />
+      <SearchBar refetchSearch={refetchSearch} numPages={searchState.nbPages} />
       <CardGrid cardData={searchState.hits} />
     </Grid>
   );
