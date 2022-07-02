@@ -130,10 +130,6 @@ export default function CardGrid(props: { cardData: Hit[] }) {
               css={css`
                 height: 26em;
               `}
-              onClick={() => {
-                setSelectedCard(data);
-                handleOpen();
-              }}
               key={data.objectID}
             >
               <Card
@@ -153,9 +149,14 @@ export default function CardGrid(props: { cardData: Hit[] }) {
                   `}
                 />
                 <CardMedia
+                  onClick={() => {
+                    setSelectedCard(data);
+                    handleOpen();
+                  }}
                   component="img"
                   css={css`
                     height: 15em;
+                    cursor: pointer;
                   `}
                   image={data.images[0].url}
                   alt="Image of card"
@@ -187,13 +188,25 @@ export default function CardGrid(props: { cardData: Hit[] }) {
                       {(() => {
                         if (isFavorite.includes(data.objectID)) {
                           return (
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography
+                              css={css`
+                                cursor: pointer;
+                              `}
+                              variant="body2"
+                              color="text.secondary"
+                            >
                               ★
                             </Typography>
                           );
                         }
                         return (
-                          <Typography variant="body2" color="text.secondary">
+                          <Typography
+                            css={css`
+                              cursor: pointer;
+                            `}
+                            variant="body2"
+                            color="text.secondary"
+                          >
                             ☆
                           </Typography>
                         );
