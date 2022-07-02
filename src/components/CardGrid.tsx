@@ -51,9 +51,10 @@ export default function CardGrid(props: { cardData: Hit[] }) {
           return (
             <Grid
               item
-              xs={4}
-              md={3}
-              sm={2}
+              xs={12}
+              sm={6}
+              md={6}
+              lg={4}
               css={css`
                 height: 26em;
               `}
