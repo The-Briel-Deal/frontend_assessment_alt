@@ -5,12 +5,16 @@ import { Grid, TextField, Button } from "@mui/material";
 import { useState, useEffect } from "react";
 
 export default function SearchBar(props: {
-  refetchSearch: (search: string) => void;
+  refetchSearch: (search: string, page: number) => void;
   numPages: number;
 }) {
+  const [page, setPage] = useState(0);
   const [searchBarValue, setSearchBarValue] = useState("");
+  useEffect(() => {
+    props.refetchSearch(searchBarValue, page);
+  }, [page]);
   function handleClick() {
-    props.refetchSearch(searchBarValue);
+    props.refetchSearch(searchBarValue, page);
   }
   return (
     <Grid
@@ -53,8 +57,8 @@ export default function SearchBar(props: {
             margin-right: 10px;
           `}
         >
-          {props.numPages} pages
-          <Button variant="contained" disabled={props.numPages > 0}>
+          {page}
+          <Button variant="contained" disabled={page <= 0}>
             Prev Page
           </Button>
         </Grid>
@@ -64,7 +68,13 @@ export default function SearchBar(props: {
             margin-left: 10px;
           `}
         >
-          <Button variant="contained" disabled={false}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setPage(page + 1);
+            }}
+            disabled={page >= props.numPages}
+          >
             Next Page
           </Button>
         </Grid>
