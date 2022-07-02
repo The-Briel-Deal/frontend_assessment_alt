@@ -58,7 +58,13 @@ export default function SearchBar(props: {
           `}
         >
           {page}
-          <Button variant="contained" disabled={page <= 0}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setPage(page - 1);
+            }}
+            disabled={page <= 0}
+          >
             Prev Page
           </Button>
         </Grid>
@@ -73,7 +79,7 @@ export default function SearchBar(props: {
             onClick={() => {
               setPage(page + 1);
             }}
-            disabled={page >= props.numPages}
+            disabled={page >= props.numPages - 1}
           >
             Next Page
           </Button>
