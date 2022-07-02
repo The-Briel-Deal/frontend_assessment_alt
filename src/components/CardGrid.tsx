@@ -8,9 +8,15 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { css } from "@emotion/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 export default function CardGrid(props: { cardData: Hit[] }) {
-  const [isFavorite, setIsFavorite] = useState(new Set() as Set<string>);
+  const [isFavorite, setIsFavorite] = useState([
+    ...JSON.parse(localStorage.getItem("isFavorite") || "[]"),
+  ] as string[]);
+  useEffect(() => {
+    localStorage.setItem("isFavorite", JSON.stringify(isFavorite));
+  }, [isFavorite]);
+
   return (
     <Grid container alignItems="center" spacing={2} columns={12}>
       {props.cardData.map((data: Hit) => {
@@ -23,9 +29,9 @@ export default function CardGrid(props: { cardData: Hit[] }) {
             css={css`
               height: 26em;
             `}
+            key={data.objectID}
           >
             <Card
-              key={data.objectID}
               css={css`
                 height: 100%;
               `}
@@ -61,9 +67,20 @@ export default function CardGrid(props: { cardData: Hit[] }) {
                       ${data.lowestListingPrice}.00 USD
                     </Typography>
                   </Grid>
-                  <Grid item>
+                  <Grid
+                    item
+                    onClick={() => {
+                      if (isFavorite.includes(data.objectID)) {
+                        setIsFavorite(
+                          isFavorite.filter((id) => id !== data.objectID)
+                        );
+                      } else {
+                        setIsFavorite([...isFavorite, data.objectID]);
+                      }
+                    }}
+                  >
                     {(() => {
-                      if (isFavorite.has(data.objectID)) {
+                      if (isFavorite.includes(data.objectID)) {
                         return (
                           <Typography variant="body2" color="text.secondary">
                             ★
