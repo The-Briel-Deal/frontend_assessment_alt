@@ -25,7 +25,7 @@ export default function SearchBar(props: {
             width: 100%;
           `}
           id="outlined-basic"
-          label="Outlined"
+          label="Card Name"
           variant="outlined"
           value={searchBarValue}
           onChange={(e) => {
