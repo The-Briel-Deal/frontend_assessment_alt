@@ -1,7 +1,7 @@
 // this comment tells babel to convert jsx to calls to a function called jsx instead of React.createElement
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { Grid, TextField, Button } from "@mui/material";
+import { Grid, TextField, Button, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 
 export default function SearchBar(props: {
@@ -11,9 +11,11 @@ export default function SearchBar(props: {
   const [page, setPage] = useState(0);
   const [searchBarValue, setSearchBarValue] = useState("");
   useEffect(() => {
+    // Whenever page changes we refetch for the new page
     props.refetchSearch(searchBarValue, page);
   }, [page]);
   function handleClick() {
+    setPage(0);
     props.refetchSearch(searchBarValue, page);
   }
   return (
@@ -49,6 +51,18 @@ export default function SearchBar(props: {
         >
           Search
         </Button>
+      </Grid>
+      <Grid container justifyContent="center">
+        <Grid
+          item
+          css={css`
+            margin-right: 10px;
+          `}
+        >
+          <Typography variant="h5">{`Page ${page + 1}/${
+            props.numPages
+          }`}</Typography>
+        </Grid>
       </Grid>
       <Grid container justifyContent="center">
         <Grid
